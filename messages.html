@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EmpowerHer Connect - Messages</title>
+</head>
+<body>
+  <h2>Send a Message</h2>
+  <input type="text" id="receiver" placeholder="Receiver UID"><br><br>
+  <textarea id="content" placeholder="Write your message"></textarea><br><br>
+  <button onclick="sendMessage()">Send</button>
+
+  <h2>Messages</h2>
+  <ul id="messageList"></ul>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+
+  <script src="app.js"></script>
+</body>
+</html>
+

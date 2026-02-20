@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login / Register</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Register</h1>
+  <form id="registerForm" action="/register" method="POST">
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <button type="submit">Register</button>
+  </form>
+
+  <h1>Login</h1>
+  <form id="loginForm" action="/login" method="POST">
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <button type="submit">Login</button>
+  </form>
+
+  <div id="responseMessage"></div>
+
+  <script>
+    // Optional: handle responses without page reload
+    const registerForm = document.getElementById('registerForm');
+    const loginForm = document.getElementById('loginForm');
+    const responseMessage = document.getElementById('responseMessage');
+
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(registerForm);
+      const res = await fetch('/register', {
+        method: 'POST',
+        body: new URLSearchParams(formData)
+      });
+      const text = await res.text();
+      responseMessage.innerText = text;
+    });
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(loginForm);
+      const res = await fetch('/login', {
+        method: 'POST',
+        body: new URLSearchParams(formData)
+      });
+      const text = await res.text();
+      responseMessage.innerText = text;
+    });
+  </script>
+</body>
+</html>

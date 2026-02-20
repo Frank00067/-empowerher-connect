@@ -1,7 +1,5 @@
 // Firebase Config
-const firebaseConfig = {
   apiKey: "YOUR_API_KEY",
-  authDomain: "your-project.firebaseapp.com",
   projectId: "your-project-id",
   storageBucket: "your-project.appspot.com",
   messagingSenderId: "SENDER_ID",
@@ -9,9 +7,6 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
 
 // ======= Login / Register =======
 function register() {
@@ -60,7 +55,6 @@ function submitRequest() {
     userEmail: user.email,
     mentorName: mentorName,
     request: requestText,
-    timestamp: firebase.firestore.FieldValue.serverTimestamp()
   }).then(() => alert("Mentorship request sent!"));
 }
 
@@ -73,7 +67,6 @@ function sendMessage() {
     sender: user.uid,
     receiver: receiver,
     content: content,
-    timestamp: firebase.firestore.FieldValue.serverTimestamp()
   }).then(() => document.getElementById("content").value = "");
 }
 

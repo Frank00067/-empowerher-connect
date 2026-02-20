@@ -8,27 +8,27 @@
 </head>
 <body>
   <h1>Register</h1>
-  <form id="registerForm" action="/register" method="POST">
+  <form id="registerForm">
     <input type="email" name="email" placeholder="Email" required>
     <input type="password" name="password" placeholder="Password" required>
     <button type="submit">Register</button>
   </form>
 
   <h1>Login</h1>
-  <form id="loginForm" action="/login" method="POST">
+  <form id="loginForm">
     <input type="email" name="email" placeholder="Email" required>
     <input type="password" name="password" placeholder="Password" required>
     <button type="submit">Login</button>
   </form>
 
-  <div id="responseMessage"></div>
+  <div id="responseMessage" style="margin-top:20px;color:green;"></div>
 
   <script>
-    // Optional: handle responses without page reload
     const registerForm = document.getElementById('registerForm');
     const loginForm = document.getElementById('loginForm');
     const responseMessage = document.getElementById('responseMessage');
 
+    // Register
     registerForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const formData = new FormData(registerForm);
@@ -38,8 +38,15 @@
       });
       const text = await res.text();
       responseMessage.innerText = text;
+
+      if (text.includes('Registration successful')) {
+        responseMessage.style.color = 'green';
+      } else {
+        responseMessage.style.color = 'red';
+      }
     });
 
+    // Login
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const formData = new FormData(loginForm);
@@ -49,7 +56,17 @@
       });
       const text = await res.text();
       responseMessage.innerText = text;
+
+      if (text.includes('Welcome back')) {
+        responseMessage.style.color = 'green';
+        // redirect after 1 second
+        setTimeout(() => {
+          window.location.href = 'mentorship.html'; // or any page you want
+        }, 1000);
+      } else {
+        responseMessage.style.color = 'red';
+      }
     });
   </script>
 </body>
-</html>
+</html>>

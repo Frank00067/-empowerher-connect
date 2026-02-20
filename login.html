@@ -28,45 +28,36 @@
     const loginForm = document.getElementById('loginForm');
     const responseMessage = document.getElementById('responseMessage');
 
-    // Register
-    registerForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(registerForm);
-      const res = await fetch('/register', {
+    async function handleForm(form, url) {
+      const formData = new FormData(form);
+      const res = await fetch(url, {
         method: 'POST',
         body: new URLSearchParams(formData)
       });
       const text = await res.text();
       responseMessage.innerText = text;
-
-      if (text.includes('Registration successful')) {
+      if (text.includes('successful') || text.includes('Welcome back')) {
         responseMessage.style.color = 'green';
       } else {
         responseMessage.style.color = 'red';
       }
+      return text;
+    }
+
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await handleForm(registerForm, '/register');
     });
 
-    // Login
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const formData = new FormData(loginForm);
-      const res = await fetch('/login', {
-        method: 'POST',
-        body: new URLSearchParams(formData)
-      });
-      const text = await res.text();
-      responseMessage.innerText = text;
-
+      const text = await handleForm(loginForm, '/login');
       if (text.includes('Welcome back')) {
-        responseMessage.style.color = 'green';
-        // redirect after 1 second
         setTimeout(() => {
-          window.location.href = 'mentorship.html'; // or any page you want
+          window.location.href = 'mentorship.html'; // redirect after login
         }, 1000);
-      } else {
-        responseMessage.style.color = 'red';
       }
     });
   </script>
 </body>
-</html>>
+</html>

@@ -1,42 +1,30 @@
-const express = require('express');
-const path = require('path');
-const app = express();
-const PORT = 3000;
+import express from "express";
+import cors from "cors";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
+import { MongoMemoryServer } from "mongodb-memory-server";
 
-// Middleware to parse form data and JSON
-app.use(express.urlencoded({ extended: true }));
+import User from "./models/User.js";
+import authRoutes from "./routes/auth.js";
+
+const app = express();
+app.use(cors());
 app.use(express.json());
 
-// Serve static files (HTML, CSS, JS) from project root
-app.use(express.static(path.join(__dirname, '..')));
+// Start in-memory MongoDB
+const mongoServer = await MongoMemoryServer.create();
+const mongoUri = mongoServer.getUri();
 
-// Dummy in-memory database
-const users = [];
+mongoose.connect(mongoUri)
+  .then(() => console.log("Connected to in-memory MongoDB"))
+  .catch(err => console.error(err));
 
-// Register route
-app.post('/register', (req, res) => {
-  console.log('Register request:', req.body);
-  const { email, password } = req.body;
-  if (!email || !password) return res.send('Please provide email and password');
+// Routes
+app.use("/api/auth", authRoutes);
 
-  if (users.find(u => u.email === email)) return res.send('User already exists!');
-  
-  users.push({ email, password });
-  console.log('Registered users:', users);
-  res.send('✅ Registration successful!');
-});
-
-// Login route
-app.post('/login', (req, res) => {
-  console.log('Login request:', req.body);
-  const { email, password } = req.body;
-  const user = users.find(u => u.email === email && u.password === password);
-  if (!user) return res.send('❌ Invalid email or password');
-
-  res.send(`✅ Welcome back, ${email}!`);
-});
+app.get("/", (req, res) => res.send("EmpowerHer Backend Running!"));
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
